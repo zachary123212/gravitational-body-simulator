@@ -1,0 +1,21 @@
+{
+  "name": "gravitational-body-simulator",
+  "homepage": "https://github.com/zachary123212/gravitational-body-simulator",
+  "authors": [
+    "zachary123212 <zlindenbaum@gmail.com>"
+  ],
+  "description": "3D gravity simulation in 2D space",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "p5js"
+  ],
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
