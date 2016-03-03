@@ -5,7 +5,7 @@ var DIMY = 1000;
 var DIMZ = 1000;
 
 var RUNNING = true;
-var AMOUNT = 50;
+var AMOUNT = 100;
 
 function PhysicsObject(x, y, z, r, c){
   this.mass   = 0.0009*(4/3)*pi*r*r*r;
@@ -130,18 +130,6 @@ function draw(){
       orderedObjects[i].update();
       orderedObjects[i].show();
     }
-
-    // for(i = 0; i < objects.length; i++){
-    //   for(i2 = 0; i2 < objects.length; i2++){
-    //     if(objects[i].position.z > objects[i2].position.z && i !== i2){
-    //       objects[i2].show();
-    //       objects[i].show();
-    //     } else if( i !== i2){
-    //       objects[i].show();
-    //       objects[i2].show();
-    //     }
-    //   }
-    // }
   }
 }
 
