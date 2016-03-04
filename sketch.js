@@ -7,31 +7,31 @@ var DIMZ = 1000;
 var RUNNING = true;
 var AMOUNT = 100;
 
-function PhysicsObject(x, y, z, r, c){
-  this.mass   = 0.0009*(4/3)*pi*r*r*r;
+function PhysicsObject(x, y, z, r, c) {
+  this.mass = 0.0009 * (4 / 3) * pi * r * r * r;
   this.radius = r;
-  this.colorBase  = c;
-  this.color = color(0,0,0);
+  this.colorBase = c;
+  this.color = color(0, 0, 0);
 
   this.apparantR = r;
 
-  this.position     = createVector(x,y,z);
-  this.velocity     = createVector(0,0,0);
-  this.acceleration = createVector(0,0,0);
+  this.position = createVector(x, y, z);
+  this.velocity = createVector(0, 0, 0);
+  this.acceleration = createVector(0, 0, 0);
 
-  this.edgeDetect = function(){
-    if(this.position.x < this.radius || this.position.x > DIMX - this.radius){
+  this.edgeDetect = function() {
+    if (this.position.x < this.radius || this.position.x > DIMX - this.radius) {
       this.velocity.x *= -1;
     }
-    if(this.position.y < this.radius || this.position.y > DIMY - this.radius){
+    if (this.position.y < this.radius || this.position.y > DIMY - this.radius) {
       this.velocity.y *= -1;
     }
-    if(this.position.z < this.radius || this.position.z > DIMZ - this.radius){
+    if (this.position.z < this.radius || this.position.z > DIMZ - this.radius) {
       this.velocity.z *= -1;
     }
   };
 
-  this.show = function(){
+  this.show = function() {
     fill(this.color);
     ellipse(this.position.x, this.position.y, this.radius * 2, this.radius * 2);
 
@@ -39,11 +39,11 @@ function PhysicsObject(x, y, z, r, c){
     // ellipse(this.position.x, this.position.y, this.apparantR * 2, this.apparantR * 2);
   };
 
-  this.applyForce = function(x, y, z){
-    this.acceleration.add(createVector(x,y,z).div(this.mass));
+  this.applyForce = function(x, y, z) {
+    this.acceleration.add(createVector(x, y, z).div(this.mass));
   };
 
-  this.update = function(){
+  this.update = function() {
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
 
@@ -54,7 +54,7 @@ function PhysicsObject(x, y, z, r, c){
     this.velocity.limit(10);
   };
 
-  this.setBrightness = function(amount){
+  this.setBrightness = function(amount) {
     amount = Math.round(amount);
 
     // this.apparantR = map(amount, 0, 255, 0.5, 2) * this.radius;
@@ -70,38 +70,38 @@ var planets = [];
 var seed = 0;
 var orderedObjects;
 
-function gravity(object1, object2){
+function gravity(object1, object2) {
   force = p5.Vector.sub(object1.position, object2.position);
-  force.mult((0.1*object1.mass*object2.mass)/(force.mag() * force.mag()));
+  force.mult((0.1 * object1.mass * object2.mass) / (force.mag() * force.mag()));
   force.normalize();
   return force;
 }
 
-function setup(){
+function setup() {
   createCanvas(DIMX, DIMY);
-  planets.push(new PhysicsObject(DIMX/2,DIMY/2,DIMZ/2,100,color(0,255,0)));
+  planets.push(new PhysicsObject(DIMX / 2, DIMY / 2, DIMZ / 2, 100, color(0, 255, 0)));
   // planets[0].mass = 100000;
 
   // objects.push(new PhysicsObject(100,100,10,20,10,color(255,0,0)));
 
-  for(i = 0; i < AMOUNT; i++){
-    objects.push(new PhysicsObject(random(DIMX),random(DIMY),random(DIMZ),random(30),color(255,0,0)));
-    objects[objects.length - 1].applyForce(random(40),random(40),random(40));
+  for (i = 0; i < AMOUNT; i++) {
+    objects.push(new PhysicsObject(random(DIMX), random(DIMY), random(DIMZ), random(30), color(255, 0, 0)));
+    objects[objects.length - 1].applyForce(random(40), random(40), random(40));
   }
 
   // objects[1].applyForce(0,40,10);
   objects[0].update();
 }
 
-function draw(){
-  if(RUNNING){
-    background(240,240,240,100);
-    for(i = 0; i < planets.length; i++){
+function draw() {
+  if (RUNNING) {
+    background(240, 240, 240, 100);
+    for (i = 0; i < planets.length; i++) {
       planets[i].show();
     }
 
-    for(i = 0; i < objects.length; i++){
-        for(planet = 0; planet < planets.length; planet++){
+    for (i = 0; i < objects.length; i++) {
+      for (planet = 0; planet < planets.length; planet++) {
         force = gravity(planets[planet], objects[i]);
 
         objects[i].applyForce(force.x, force.y, force.z);
@@ -110,7 +110,7 @@ function draw(){
         objects[i].update();
         seed += 0.01;
 
-        if(p5.Vector.sub(objects[i].position, planets[planet].position).mag() < planets[planet].radius){
+        if (p5.Vector.sub(objects[i].position, planets[planet].position).mag() < planets[planet].radius) {
           // plantets[planet].radius = Math.cbrt(4/3*pi*objects[i].radius*objects[i].radius*objects[i].radius )
 
           objects.splice(i, 1);
@@ -119,24 +119,26 @@ function draw(){
       }
     }
 
-    for(i = 0; i < objects.length; i++){
+    for (i = 0; i < objects.length; i++) {
       objects[i].show();
     }
 
     orderedObjects = Object.create(objects);
     Array.prototype.push.apply(orderedObjects, planets);
-    orderedObjects.sort(function(a, b) {return parseFloat(a.position.z) - parseFloat(b.position.z);});
-    for(i = 0; i < objects.length; i++){
+    orderedObjects.sort(function(a, b) {
+      return parseFloat(a.position.z) - parseFloat(b.position.z);
+    });
+    for (i = 0; i < objects.length; i++) {
       orderedObjects[i].update();
       orderedObjects[i].show();
     }
   }
 }
 
-function mouseClicked(){
+function mouseClicked() {
   // RUNNING = !RUNNING;
 
-  planets.push(new PhysicsObject(mouseX,mouseY,0,100,color(0,255,0)));
+  planets.push(new PhysicsObject(mouseX, mouseY, 0, 100, color(0, 255, 0)));
   // if(mouseX < DIMX && mouseX > 0 && mouseY < DIMY && mouseY > 0){
   //   planets[0].position.x = mouseX;
   //   planets[0].position.y = mouseY;
