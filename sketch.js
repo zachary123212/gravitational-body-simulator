@@ -7,6 +7,8 @@ var DIMZ = 1000;
 var RUNNING = true;
 var AMOUNT = 100;
 
+var control;
+
 function PhysicsObject(x, y, z, r, c) {
   this.mass = 0.0009 * (4 / 3) * pi * r * r * r;
   this.radius = r;
@@ -78,6 +80,16 @@ function gravity(object1, object2) {
 }
 
 function setup() {
+  control = createSelect();
+  control.option('add');
+  control.option('remove');
+  control.option('pause');
+
+  newSize = createInput();
+
+  createDiv("<br>");
+
+
   createCanvas(DIMX, DIMY);
   planets.push(new PhysicsObject(DIMX / 2, DIMY / 2, DIMZ / 2, 100, color(0, 255, 0)));
   // planets[0].mass = 100000;
@@ -138,7 +150,27 @@ function draw() {
 function mouseClicked() {
   // RUNNING = !RUNNING;
 
-  planets.push(new PhysicsObject(mouseX, mouseY, 0, 100, color(0, 255, 0)));
+  if(mouseX < DIMX && mouseX > 0 && mouseY < DIMY && mouseY > 0){
+    switch(control.value()){
+      case "add":
+        planets.push(new PhysicsObject(mouseX, mouseY, Math.floor(newSize.value()), 100, color(0, 255, 0)));
+        break;
+
+      case "remove":
+        for(i = 0; i < planets.length; i++){
+          if(dist(mouseX, mouseY, planets[i].position.x, planets[i].position.y) < planets[i].radius){
+            planets.splice(i, 1);
+            break;
+          }
+        }
+        break;
+
+      case "pause":
+        RUNNING = !RUNNING;
+    }
+  }
+
+  // planets.push(new PhysicsObject(mouseX, mouseY, 0, 100, color(0, 255, 0)));
   // if(mouseX < DIMX && mouseX > 0 && mouseY < DIMY && mouseY > 0){
   //   planets[0].position.x = mouseX;
   //   planets[0].position.y = mouseY;
